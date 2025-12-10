@@ -86,6 +86,18 @@ cd REPOSITORY_NAME
 pip install pandas torch torch-geometric scikit-learn matplotlib networkx mlflow pubchempy
 ```
 
+### Data Preparation
+
+The system uses `kg_clean.csv` (cleaned knowledge graph):
+- ~1.5M drug-disease-protein relationships
+- Entities: drugs, diseases, genes/proteins
+- Preprocessed and deduplicated
+
+To generate cleaned data from raw `kg.csv`:
+```bash
+python kg_clean.py
+```
+
 ### Running the Application
 
 ```bash
@@ -102,18 +114,6 @@ You'll see the interactive menu:
 5. Run Model Battle (GCN vs GAT vs Random Forest)
 6. Plot Confidence Calibration
 q. Quit
-```
-
-### Data Preparation
-
-The system uses `kg_clean.csv` (cleaned knowledge graph):
-- ~1.5M drug-disease-protein relationships
-- Entities: drugs, diseases, genes/proteins
-- Preprocessed and deduplicated
-
-To generate cleaned data from raw `kg.csv`:
-```bash
-python kg_clean.py
 ```
 
 ## Architecture
@@ -314,4 +314,5 @@ For questions or collaboration, please open an issue or reach out via GitHub.
 
 **Last Updated:** December 2025  
 **Status:** Active Development
+
 
