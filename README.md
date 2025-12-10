@@ -73,7 +73,9 @@ Visualize prediction confidence across entire dataset:
 
 ### Installation
 
-**Prerequisites:** Python 3.8+, pip
+**Prerequisites:** Python 3.8+, pip, kg dataset
+
+Download the kg.csv file from this link: https://dataverse.harvard.edu/file.xhtml?fileId=6180620&version=2.1
 
 ```bash
 # Clone repository
@@ -312,3 +314,4 @@ For questions or collaboration, please open an issue or reach out via GitHub.
 
 **Last Updated:** December 2025  
 **Status:** Active Development
+
