@@ -280,39 +280,10 @@ For drug discovery, we care about **top predictions**. Precision@5 tells us: "Of
 ### What about uncertainty?
 Monte Carlo Dropout runs 100 forward passes with dropout enabled at test time. The spread of predictions indicates model confidence—useful for clinical decision-making.
 
-## Future Improvements
-
-- [ ] REST API for serving predictions
-- [ ] Web UI (Streamlit/Gradio)
-- [ ] Additional baseline models (Graph Sage, Node2Vec)
-- [ ] Temporal validation (predict future links)
-- [ ] Drug-drug interaction prediction
-- [ ] Integration with clinical trial databases
-
-## Citation
-
-If you use this project, please cite:
-
-```bibtex
-@software{drug_repurposing_2025,
-  title={Drug Repurposing with Graph Neural Networks},
-  author={Your Name},
-  year={2025},
-  url={https://github.com/your-repo}
-}
-```
-
-## License
-
-MIT License - See LICENSE file for details
-
-## Contact
-
-For questions or collaboration, please open an issue or reach out via GitHub.
-
 ---
 
 **Last Updated:** December 2025  
 **Status:** Active Development
+
 
 
