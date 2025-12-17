@@ -16,7 +16,7 @@ import os
 # ==========================================
 print("--- STEP 1: LOADING DATA ---")
 if not os.path.exists('kg_clean.csv'):
-    print("❌ Error: 'kg_clean.csv' not found. Please run the cleaning script first!")
+    print("Error: 'kg_clean.csv' not found. Please run the cleaning script first!")
     sys.exit()
 
 # Load Data (disable chunked type inference to avoid dtype warnings)
@@ -85,8 +85,8 @@ def get_drug_details(drug_name):
         formula = c.molecular_formula
         
         # 3. Format the output
-        info = f"\n   [🔬 Formula]: {formula}"
-        info += f"\n   [💊 Brands/Synonyms]: {synonyms_str}"
+        info = f"\n   [Formula]: {formula}"
+        info += f"\n   [Brands/Synonyms]: {synonyms_str}"
         
         return info
 
@@ -107,10 +107,10 @@ def visualize_connection(drug, disease):
         paths = list(nx.all_shortest_paths(G, source=drug, target=disease))
         paths = paths[:5]  # Limit to first 5 paths
     except nx.NetworkXNoPath:
-        print("   ❌ No direct path found in the training data.")
+        print("No direct path found in the training data.")
         return
     except Exception as e:
-        print(f"   ❌ Error finding path: {e}")
+        print(f"Error finding path: {e}")
         return
 
     # Build subgraph
@@ -147,7 +147,7 @@ def visualize_connection(drug, disease):
     
     filename = f"explanation_{drug}_{disease}.png".replace(" ", "_")
     plt.savefig(filename)
-    print(f"   📸 Graph image saved to: {filename}")
+    print(f"  Graph image saved to: {filename}")
     plt.close()
 
 def get_connection_pathways(drug, disease, num_paths=3):
@@ -262,7 +262,7 @@ def interactive_search():
     query = input("Search query: ").strip()
     
     if not query:
-        print("❌ Empty search")
+        print(" Empty search")
         return None
     
     matches = search_name(query)
@@ -271,7 +271,7 @@ def interactive_search():
         print(f"❌ No matches for '{query}'")
         return None
     
-    print(f"\n✅ Found {len(matches)} match(es):\n")
+    print(f"\n Found {len(matches)} match(es):\n")
     for i, match in enumerate(matches, 1):
         print(f"  {i}. {match}")
     
@@ -292,10 +292,10 @@ def interactive_search():
 def predict_single_link(drug, disease):
     """Predicts probability of a link between two specific nodes"""
     if drug not in node_map:
-        print(f"❌ '{drug}' not found. Did you mean: {search_name(drug)}?")
+        print(f"'{drug}' not found. Did you mean: {search_name(drug)}?")
         return
     if disease not in node_map:
-        print(f"❌ '{disease}' not found. Did you mean: {search_name(disease)}?")
+        print(f"'{disease}' not found. Did you mean: {search_name(disease)}?")
         return
         
     src_id = node_map[drug]
@@ -308,16 +308,16 @@ def predict_single_link(drug, disease):
         z = model.encode()
         score = torch.sigmoid(model.decode(z, edge)).item()
     
-    print(f"🔍 Probability {drug} <-> {disease}: {score*100:.2f}%")
+    print(f"Probability {drug} <-> {disease}: {score*100:.2f}%")
 
 def find_top_drugs_for_disease(disease_name, top_k=5):
     """Scans ALL drugs and fetches details for the winners"""
     
     if disease_name not in node_map:
-        print(f"❌ '{disease_name}' not found. Did you mean: {search_name(disease_name)}?")
+        print(f" '{disease_name}' not found. Did you mean: {search_name(disease_name)}?")
         return
 
-    print(f"\n🧪 Scanning database for {disease_name} treatments...")
+    print(f"\n Scanning database for {disease_name} treatments...")
     
     drug_names = df[df['x_type'] == 'drug']['x_name'].unique()
     disease_id = node_map[disease_name]
@@ -340,17 +340,17 @@ def find_top_drugs_for_disease(disease_name, top_k=5):
     
     # LOOP THROUGH THE WINNERS
     for i, (name, score) in enumerate(candidates[:top_k]):
-        print(f"{i+1}. 🌟 {name} (Confidence: {score*100:.1f}%)")
+        print(f"{i+1}. {name} (Confidence: {score*100:.1f}%)")
         
         # Get connecting pathways
         pathways = get_connection_pathways(name, disease_name, num_paths=3)
         if pathways:
-            print(f"   📍 Top Connecting Pathways:")
+            print(f"Top Connecting Pathways:")
             for p in pathways:
                 print(f"      Path {p['path_num']} (length {p['length']}):")
                 print(f"        {p['detailed']}")
         else:
-            print(f"   ⚠️  No known pathways between {name} and {disease_name}")
+            print(f"No known pathways between {name} and {disease_name}")
         
         # Fetch PubChem details
         details = get_drug_details(name)
@@ -363,10 +363,10 @@ def predict_with_uncertainty(drug, disease, num_iterations=100):
     Run prediction multiple times with dropout enabled to get confidence intervals
     """
     if drug not in node_map:
-        print(f"❌ '{drug}' not found. Did you mean: {search_name(drug)}?")
+        print(f"'{drug}' not found. Did you mean: {search_name(drug)}?")
         return
     if disease not in node_map:
-        print(f"❌ '{disease}' not found. Did you mean: {search_name(disease)}?")
+        print(f"'{disease}' not found. Did you mean: {search_name(disease)}?")
         return
     
     src_id = node_map[drug]
@@ -386,21 +386,21 @@ def predict_with_uncertainty(drug, disease, num_iterations=100):
     mean_prob = np.mean(predictions)
     std_prob = np.std(predictions)
     
-    print(f"\n🎲 UNCERTAINTY-AWARE PREDICTION: {drug} <-> {disease}")
+    print(f"\n UNCERTAINTY-AWARE PREDICTION: {drug} <-> {disease}")
     print(f"   Mean Probability: {mean_prob*100:.2f}%")
     print(f"   Std Deviation: {std_prob*100:.2f}%")
     print(f"   95% Confidence Interval: [{(mean_prob - 1.96*std_prob)*100:.2f}%, {(mean_prob + 1.96*std_prob)*100:.2f}%]")
     
     if std_prob < 0.1:
-        print(f"   ✅ HIGH CONFIDENCE - Model is certain")
+        print(f"   HIGH CONFIDENCE - Model is certain")
     elif std_prob < 0.2:
-        print(f"   ⚠️  MODERATE CONFIDENCE - Some uncertainty")
+        print(f"   MODERATE CONFIDENCE - Some uncertainty")
     else:
-        print(f"   ❌ LOW CONFIDENCE - Model is guessing")
+        print(f"   LOW CONFIDENCE - Model is guessing")
 
 def plot_confidence_calibration():
     """Plot histogram of prediction confidence across the entire dataset"""
-    print("\n📊 Computing confidence calibration across all edges...")
+    print("\n Computing confidence calibration across all edges...")
     print("This may take a moment...")
     
     all_scores = []
@@ -456,14 +456,14 @@ def plot_confidence_calibration():
     plt.savefig('confidence_calibration.png', dpi=150)
     plt.close()
     
-    print(f"\n✅ Confidence Calibration Complete!")
+    print(f"\n Confidence Calibration Complete!")
     print(f"   Total predictions: {len(all_scores):,}")
     print(f"   Mean confidence: {np.mean(all_scores):.3f}")
     print(f"   Median confidence: {np.median(all_scores):.3f}")
     print(f"   Std deviation: {np.std(all_scores):.3f}")
     print(f"   Min confidence: {np.min(all_scores):.3f}")
     print(f"   Max confidence: {np.max(all_scores):.3f}")
-    print(f"   📈 Plot saved: confidence_calibration.png")
+    print(f"   Plot saved: confidence_calibration.png")
     
     return all_scores
 
@@ -503,10 +503,10 @@ while True:
     elif choice == '4':
         result = interactive_search()
         if result:
-            print(f"\n✨ Selected: {result}")
+            print(f"\n Selected: {result}")
         
     elif choice == '5':
-        print("\n⚠️  Model Comparison Mode")
+        print("\n  Model Comparison Mode")
         print("GCN will be compared against:")
         print("1. GAT (Graph Attention Network)")
         print("2. Random Forest")
