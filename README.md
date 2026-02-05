@@ -283,7 +283,8 @@ Monte Carlo Dropout runs 100 forward passes with dropout enabled at test time. T
 ---
 
 **Last Updated:** December 2025  
-**Status:** Active Development
+**Status:** Inactive Development
+
 
 
 
